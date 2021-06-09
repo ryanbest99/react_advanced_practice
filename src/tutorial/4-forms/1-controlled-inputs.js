@@ -5,14 +5,19 @@ function ControlledInputs() {
   const [email, setEmail] = useState("");
   const [people, setPeople] = useState([]);
 
-  const handleChange = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hello");
-    const person = { id: new Date().getTime().toString(), name, email };
-    console.log(person);
-    setPeople((prevPeople) => {
-      return [...prevPeople, person];
-    });
+
+    if (name && email) {
+      const person = { id: new Date().getTime().toString(), name, email };
+      setPeople((people) => {
+        return [...people, person];
+      });
+      setName("");
+      setEmail("");
+    } else {
+      console.log("Empty values");
+    }
   };
 
   return (
@@ -38,18 +43,18 @@ function ControlledInputs() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <button type="submit" onClick={handleChange}>
-          Click
+        <button type="submit" onClick={handleSubmit}>
+          Sumbit
         </button>
       </form>
 
-      {people.map((person) => {
-        const { id, name, email } = person;
-        console.log(id);
+      {people.map(function (person) {
+        console.log(person);
         return (
-          <div key={id}>
-            <h1>{name}</h1>
-            <h2>{email}</h2>
+          <div key={person.id}>
+            <h1>id: {person.id}</h1>
+            <h1>name: {person.name}</h1>
+            <h1>email: {person.email}</h1>
           </div>
         );
       })}
