@@ -1,24 +1,29 @@
 import React, { useState } from "react";
 
 function ControlledInputs() {
-  //   const [name, setName] = useState("");
+  //   const [firstName, setFistName] = useState("");
   //   const [email, setEmail] = useState("");
-  const [person, setPerson] = useState({ firstName: "", email: "", age: "" });
+  const [person, setPerson] = useState({ firstName: "", email: "" });
   const [people, setPeople] = useState([]);
-
-  const handleChange = (e) => {
-    console.log("changing");
-    const name = e.target.name;
-    const value = e.target.value;
-    setPerson({ ...person, [e.target.name]: value });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("handle Submit");
-    const newPerson = { ...person, id: new Date().getTime().toString() };
-    setPeople([...people, newPerson]);
-    setPerson({ firstName: "", email: "", age: "" });
+    const newPerson = {
+      id: new Date().getTime().toString(),
+      firstName: person.firstName,
+      email: person.email,
+    };
+    setPeople((prevPeople) => {
+      return [...prevPeople, newPerson];
+    });
+
+    setPerson({ firstName: "", email: "" });
+  };
+
+  const handleChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setPerson({ ...person, [key]: value });
   };
 
   return (
@@ -32,6 +37,7 @@ function ControlledInputs() {
             name="firstName"
             value={person.firstName}
             onChange={handleChange}
+            // onChange={(e) => setFistName(e.target.value)}
           />
         </div>
         <div>
@@ -42,31 +48,18 @@ function ControlledInputs() {
             name="email"
             value={person.email}
             onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="age">Age:</label>
-          <input
-            type="text"
-            id="age"
-            name="age"
-            value={person.age}
-            onChange={handleChange}
+            // onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <button type="submit" onClick={handleSubmit}>
-          Sumbit
+          Submit
         </button>
       </form>
-
       {people.map(function (person) {
-        console.log(person);
         return (
           <div key={person.id}>
-            <h1>id: {person.id}</h1>
-            <h1>name: {person.firstName}</h1>
-            <h1>email: {person.email}</h1>
-            <h1>email: {person.age}</h1>
+            <h1>{person.firstName}</h1>
+            <h1>{person.email}</h1>
           </div>
         );
       })}
